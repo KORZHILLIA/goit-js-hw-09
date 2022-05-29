@@ -4,7 +4,7 @@ const stopBtn = document.querySelector('[data-stop]');
 let timerId = null;
 
 changeBodyColor = event => {
-  event.currentTarget.disabled;
+  event.currentTarget.disabled = true;
   timerId = setInterval(() => {
     const currentColor = getRandomHexColor();
     document.body.style.backgroundColor = currentColor;
@@ -13,7 +13,7 @@ changeBodyColor = event => {
 
 stopChangeBodyColor = () => {
   clearInterval(timerId);
-  !startBtn.disabled;
+  startBtn.disabled = false;
 };
 
 getRandomHexColor = () =>

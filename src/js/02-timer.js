@@ -1,5 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const timeInput = document.querySelector('#datetime-picker');
 const startBtn = document.querySelector('[data-start]');
 
@@ -14,7 +16,12 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0] < Date.now()) {
-      setTimeout(() => alert('no'), 500);
+      Notify.failure('Please choose a date in the future', {
+        timeout: 1000,
+        width: '390px',
+        distance: '60px',
+        fontSize: '20px',
+      });
     } else {
       startBtn.disabled = false;
     }
@@ -23,23 +30,29 @@ const options = {
 };
 const coolDateChoose = flatpickr(timeInput, options);
 
+addLeadingZero = value => String(value).padStart(2, '0');
+addLeadingZeros = value => String(value).padStart(3, '0');
+
 showRestTime = () => {
   const endTime = selectedTime.getTime();
-  setInterval(() => {
-    const requiredInfo = convertMs(endTime - Date.now());
-    const arr = document.querySelectorAll('.value');
-    arr.forEach(field => {
-      const name = field.dataset;
+  const timerId = setInterval(() => {
+    const currentTime = endTime - Date.now();
+    if (currentTime <= 0) {
+      clearInterval(timerId);
+      return;
+    }
+    const labelsArr = document.querySelectorAll('.label');
+    labelsArr.forEach(label => {
+      const span = label.previousElementSibling;
+      span.textContent =
+        label.textContent === 'Days'
+          ? addLeadingZeros(
+              convertMs(currentTime)[label.textContent.toLowerCase()]
+            )
+          : addLeadingZero(
+              convertMs(currentTime)[label.textContent.toLowerCase()]
+            );
     });
-    // const { days, hours, minutes, seconds } = convertMs(endTime - Date.now());
-    // const hdays = document.querySelector('[data-days]');
-    // const hhours = document.querySelector('[data-hours]');
-    // const hminutes = document.querySelector('[data-minutes]');
-    // const hseconds = document.querySelector('[data-seconds]');
-    // hdays.textContent = days;
-    // hhours.textContent = hours;
-    // hminutes.textContent = minutes;
-    // hseconds.textContent = seconds;
   }, 1000);
 };
 
