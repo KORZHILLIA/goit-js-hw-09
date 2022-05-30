@@ -33,7 +33,7 @@ const coolDateChoose = flatpickr(timeInput, options);
 const addLeadingZero = value => String(value).padStart(2, '0');
 const addLeadingZeros = value => String(value).padStart(3, '0');
 
-showRestTime = () => {
+const showRestTime = () => {
   const endTime = selectedTime.getTime();
   const timerId = setInterval(() => {
     const currentTime = endTime - Date.now();
