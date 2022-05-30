@@ -30,8 +30,8 @@ const options = {
 };
 const coolDateChoose = flatpickr(timeInput, options);
 
-addLeadingZero = value => String(value).padStart(2, '0');
-addLeadingZeros = value => String(value).padStart(3, '0');
+const addLeadingZero = value => String(value).padStart(2, '0');
+const addLeadingZeros = value => String(value).padStart(3, '0');
 
 showRestTime = () => {
   const endTime = selectedTime.getTime();
